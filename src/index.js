@@ -6,7 +6,12 @@ const { v4 } = require('uuid')
 app.use(express.json())
 app.use(express.urlencoded({
 	extended: false
-}))
+}));
+
+app.use((req, res, next) => {
+	console.log(`${req.method}: ${req.url}`);
+	next();
+})
 
 const frends = [
 	{
@@ -18,12 +23,17 @@ const frends = [
 		lastname: "Raxmonov"
 	}
 ];
-
-app.get('/', (req, res) => {
+app.get('/users', (req, res) => {
 	res.send(frends);
 });
 
-app.post('/', (req, res) => {
+app.get('/users/:item', (req, res) => {
+	const { item } = req.params;
+	const usersItem = frends.find((g) => g.item === item);
+	res.send(usersItem);
+})
+
+app.post('/users', (req, res) => {
 	console.log(req.body);
 	frends.push(req.body);
 	res.send(201);
