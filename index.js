@@ -49,6 +49,22 @@ app.put('/users/:id', (req, res) => {
     res.status(200).send(user);
 })
 
+// User-ni o'chirish
+app.delete('/users/:id', (req, res) => {
+    // User-ni id orqali topish
+    const user = users.find(u => u.id === req.params.id);
+    // User topilmasa 404 error qaytarish
+    if (!user) {
+        return res.status(404).send('User topilmadi :(');
+    }
+    // O'chirish kerak bo'lgan user-ni aniqlash;
+    const userIndex = users.indexOf(user);
+    // User-ni o'chirish;
+    users.splice(userIndex, 1);
+    //  O'chirilgan user-ni ko'rsatish
+    res.status(200).send(user);
+})
+
 // User-ni ID orqali topish
 app.get('/users/:id', (req, res) => {
     const user = users.find(u => u.id === req.params.id);
