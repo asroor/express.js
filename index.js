@@ -2,10 +2,18 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const { v4 } = require('uuid');
-const Joi = require('joi')
+const Joi = require('joi');
+const logger = require('./logger');
+const morgan = require('morgan');
+const helmet = require('helmet');
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(express.static('public'));
+app.use(morgan('tiny'));
+app.use(helmet());
 
 const users = [];
 const minName = 3;
